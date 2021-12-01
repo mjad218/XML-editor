@@ -42,10 +42,10 @@ Then you should build a graph relation between the user that looks like the grap
 beneath.
 8. Network analysis: by representing the network using the graph data structure, we can
 extract some important data:
-- who is the most influencer user (has the most followers)
-- who is the most active user (connected to lots of users)
-- the mutual followers between 2 users
-- for each user, suggest a list of users to follow (the followers of his followers)
+    - who is the most influencer user (has the most followers)
+    - who is the most active user (connected to lots of users)
+    - the mutual followers between 2 users
+    - for each user, suggest a list of users to follow (the followers of his followers)
 8. Post search: given a specific word or topic, get the posts where this word or topic was
 mentioned.
 
