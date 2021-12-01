@@ -1,6 +1,6 @@
 # XML Editor
-A university project for Data structures and Algorithms course; CSE331s
-
+A university project for Data structures and Algorithms course CSE331s
+Fall 2021
 ## Project Description 
 XML (Extensible Markup Language) is one of the most famous formats for storing and sharing
 information among different devices. Some text editors such as Sublime Text are able to parse
