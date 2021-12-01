@@ -54,3 +54,9 @@ mentioned.
 graph of the network showing how the user is connected to each other.
 2. Additional operations: you’re free to implement additional operations to help you analyze
 the network better.
+
+
+-----------
+# Project Implementation 
+## Libraries
+We are going to use the QT library to generate the GUI of the application.
