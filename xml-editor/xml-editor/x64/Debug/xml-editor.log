@@ -1,5 +1,2 @@
-﻿  moc xmleditor.h
-  main.cpp
-  xmleditor.cpp
-  moc_xmleditor.cpp
+﻿  xmleditor.cpp
   xml-editor.vcxproj -> D:\Github\XML-editor\xml-editor\x64\Debug\xml-editor.exe
