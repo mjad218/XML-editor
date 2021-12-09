@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_xmleditor.h"
+#include <qpushbutton.h>
 
 class xmleditor : public QMainWindow
 {
@@ -11,5 +12,6 @@ public:
     xmleditor(QWidget *parent = Q_NULLPTR);
 
 private:
+    QPushButton* openFile; 
     Ui::xmleditorClass ui;
 };
