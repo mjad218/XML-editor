@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml-editor", "xml-editor\xml-editor.vcxproj", "{AFA4F136-A71E-460A-BCBB-62F691ADF00C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml-editor", "xml-editor\xml-editor.vcxproj", "{636528EF-9A48-45AF-8A7D-02C6216586BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AFA4F136-A71E-460A-BCBB-62F691ADF00C}.Debug|x64.ActiveCfg = Debug|x64
-		{AFA4F136-A71E-460A-BCBB-62F691ADF00C}.Debug|x64.Build.0 = Debug|x64
-		{AFA4F136-A71E-460A-BCBB-62F691ADF00C}.Release|x64.ActiveCfg = Release|x64
-		{AFA4F136-A71E-460A-BCBB-62F691ADF00C}.Release|x64.Build.0 = Release|x64
+		{636528EF-9A48-45AF-8A7D-02C6216586BA}.Debug|x64.ActiveCfg = Debug|x64
+		{636528EF-9A48-45AF-8A7D-02C6216586BA}.Debug|x64.Build.0 = Debug|x64
+		{636528EF-9A48-45AF-8A7D-02C6216586BA}.Release|x64.ActiveCfg = Release|x64
+		{636528EF-9A48-45AF-8A7D-02C6216586BA}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8DA3C4DA-03F6-4700-BA52-8C38B2C39ECE}
+		SolutionGuid = {73A85870-8FC9-4ABC-847F-55E260F09D28}
 	EndGlobalSection
 EndGlobal
