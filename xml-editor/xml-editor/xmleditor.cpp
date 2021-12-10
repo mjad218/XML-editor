@@ -30,6 +30,7 @@ xmleditor::xmleditor(QWidget *parent) : QMainWindow(parent)
 	connect(OpenAction, &QAction::triggered, this, &xmleditor::Open);
 	connect(SaveAction, &QAction::triggered, this, &xmleditor::Save);
 	connect(SaveAsAction, &QAction::triggered, this, &xmleditor::SaveAs);
+	connect(MinifyAction, &QAction::triggered, this, &xmleditor::minify);
 
 	connect(textarea->document(), &QTextDocument::contentsChanged, this, &xmleditor::documntModified);
 	connect(textarea->document(), &QTextDocument::contentsChanged, this, &xmleditor::documentChanged);
@@ -109,6 +110,23 @@ void xmleditor::documentChanged() {
 		QMessageBox::information(this, "Info", "not Consistant");
 	}
 }
+
+
+// minify xml 
+
+
+void xmleditor::minify() {
+	std::string str;
+	str = this->textarea->document()->toPlainText().toStdString();
+	std::string strout;
+	for (unsigned int i = 0; i < str.length(); i++) {
+		if (str[i] == '\n' || str[i] == ' ') {
+			continue;
+		}
+		strout += str[i];
+	}
+	this->textarea->document()->setPlainText(QString::fromStdString(strout));
+}
 void xmleditor::init_menubar()
 {
 	filemenu = menuBar()->addMenu("File");
@@ -142,12 +160,21 @@ void xmleditor::init_menubar()
 		filemenu->addAction(ExitAction);
 	}
 
+	optionsmenu = menuBar()->addMenu("Options");
+	{
+		MinifyAction = new QAction(QIcon(":/icons/minify.png"), "Minify");
+		MinifyAction->setStatusTip("Minify XML");
+		optionsmenu->addAction(MinifyAction);
+	}
+
 	helpmenu = menuBar()->addMenu("Help");
 	{
 		AboutAction = new QAction(QIcon(":/icons/help.png"), "help");
 		AboutAction->setStatusTip("about us");
 		helpmenu->addAction(AboutAction);
 	}
+
+
 }
 
 void xmleditor::init_toolbar()

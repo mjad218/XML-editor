@@ -42,7 +42,7 @@ private:
 	void setCurrentFile(QString filename);
 	void documntModified();
 	bool maybesave();
-
+	void minify();
 
 	int font_size;
 
@@ -51,6 +51,8 @@ private:
 	QMenu* formatmenu;
 	QMenu* viewmenu;
 	QMenu* helpmenu;
+	QMenu* optionsmenu;
+	QAction* MinifyAction;
 
 	QAction* NewAction;
 	QAction* OpenAction;
