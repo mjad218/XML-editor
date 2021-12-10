@@ -1,4 +1,11 @@
 <RCC>
-    <qresource prefix="xmleditor">
+    <qresource prefix="/">
+        <file>icons/new.png</file>
+        <file>icons/exit.png</file>
+        <file>icons/help.png</file>
+        <file>icons/open.png</file>
+        <file>icons/save.png</file>
+        <file>icons/save-as.png</file>
     </qresource>
+    <qresource prefix="/icons"/>
 </RCC>
