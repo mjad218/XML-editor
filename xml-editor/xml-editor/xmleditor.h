@@ -6,6 +6,10 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPlainTextEdit>
+#include <stack>
+#include <string>
+
+
 class xmleditor : public QMainWindow
 {
     Q_OBJECT
@@ -33,7 +37,8 @@ private:
 	void init_menubar();
 	void init_toolbar();
 	void init_statusbar();
-
+	void documentChanged(); 
+	bool checkConsistency(std::string tag, std::stack<std::string>& s);
 	void setCurrentFile(QString filename);
 	void documntModified();
 	bool maybesave();

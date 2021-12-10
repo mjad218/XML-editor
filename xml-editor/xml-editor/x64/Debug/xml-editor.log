@@ -1,4 +1,5 @@
-﻿  rcc xmleditor.qrc
+﻿  moc xmleditor.h
   xmleditor.cpp
-  qrc_xmleditor.cpp
+  main.cpp
+  moc_xmleditor.cpp
   xml-editor.vcxproj -> D:\Github\XML-editor\xml-editor\x64\Debug\xml-editor.exe
