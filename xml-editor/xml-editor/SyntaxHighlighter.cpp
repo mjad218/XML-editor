@@ -15,11 +15,18 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument* parent) :
 
 // Checking Consistency 
 bool SyntaxHighlighter::checkConsistency(std::string tag, std::stack<std::string>& s) {
-	if (tag == s.top()) {
-		s.pop();
-		return true;
+	if (!s.empty()) {
+		std::string str = s.top();
+		if (!(tag == str)) {
+			// s.push(str);
+			s.pop();
+			return false;
+		}
+		else {
+			s.pop();
+			return true;
+		}
 	}
-	return false;
 }
 
 void SyntaxHighlighter::highlightBlock(const QString& text)
@@ -45,6 +52,7 @@ void SyntaxHighlighter::highlightBlock(const QString& text)
 				if (!checkConsistency(tagName, tags)) {
 					isConsistant = false;
 					QTextCharFormat errorFormat;
+					//errorFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
 					errorFormat.setForeground(Qt::red);
 					setFormat(i - tagName.length(),  i, errorFormat);
 				}
