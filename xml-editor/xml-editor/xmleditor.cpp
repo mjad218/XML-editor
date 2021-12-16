@@ -6,13 +6,17 @@
 #include <QTextStream>
 #include <QGuiApplication>
 #include <QSaveFile>
+#include <iostream>
+#include <QSyntaxHighlighter>
 
 xmleditor::xmleditor(QWidget *parent) : QMainWindow(parent)
 {
     setWindowTitle("XML Editor");
     ui.setupUi(this);
-	textarea = new QPlainTextEdit();
+	textarea = new QTextEdit();
+	textarea->setPlaceholderText(QString("Write xml..."));
 	setCentralWidget(textarea);
+	highlighter = new SyntaxHighlighter(textarea->document());
 
 	init_menubar();
 
@@ -33,8 +37,6 @@ xmleditor::xmleditor(QWidget *parent) : QMainWindow(parent)
 	connect(MinifyAction, &QAction::triggered, this, &xmleditor::minify);
 
 	connect(textarea->document(), &QTextDocument::contentsChanged, this, &xmleditor::documntModified);
-	connect(textarea->document(), &QTextDocument::contentsChanged, this, &xmleditor::documentChanged);
-
 
 	setCurrentFile(QString());
 
@@ -44,83 +46,15 @@ xmleditor::~xmleditor()
 {
 
 }
-// Checking Consistency 
-bool xmleditor::checkConsistency(std::string tag , std::stack<std::string>& s) {
-	if (tag == s.top()) {
-		s.pop();
-		return true;
-	}
-	return false;
-}
-
-void xmleditor::documentChanged() {
-	std::string str;
-	str = this->textarea->document()->toPlainText().toStdString();
-	std::stack<std::string> tags;
-	std::string tagName;
-
-	bool isClosingTag = false;
-	bool isConsistant = true;
-
-	for (unsigned int i = 0; i < str.length(); i++) {
-		// if(!isConsistant){
-		//    break;
-		// }
-		switch (str[i]) {
-		case '<':
-			tagName = "";
-			break;
-		case ' ':
-			break;
-
-		case '>':
-			if (isClosingTag) {
-				if (!checkConsistency(tagName, tags)) {
-					isConsistant = false;
-				}
-				isClosingTag = false;
-			}
-			else {
-				tags.push(tagName);
-				tagName = "";
-			}
-
-			break;
-		case '/':
-			/*  if(sti[i+1]=='>'){
-				 tags.push(tagName);
-				 tags.push(tagName);
-			  }
-			  if(sti[i-1]=='<'){
-				 tags.push(tagName);
-			  }*/
-			isClosingTag = true;
-
-			break;
-		default:
-			tagName += str[i];
-
-		}
-	}
-
-	if (isConsistant) {
-		QMessageBox::information(this, "Info", "is Consistant");
-	}
-	else {
-		QMessageBox::information(this, "Info", "not Consistant");
-	}
-}
-
-
-// minify xml 
-
-
+// minify xml
 void xmleditor::minify() {
 	std::string str;
 	str = this->textarea->document()->toPlainText().toStdString();
 	std::string strout;
+	bool isContent = false;
+
 	for (unsigned int i = 0; i < str.length(); i++) {
-		if (str[i] == '\n' || str[i] == ' ') {
+		if (str[i] == '\n' || str[i] == ' ' || str[i] == '\t') {
 			continue;
 		}
 		strout += str[i];

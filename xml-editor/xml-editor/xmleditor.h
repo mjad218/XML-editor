@@ -5,10 +5,9 @@
 #include <qpushbutton.h>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QPlainTextEdit>
-#include <stack>
+#include <QTextEdit>
 #include <string>
-
+#include "SyntaxHighlighter.h"
 
 class xmleditor : public QMainWindow
 {
@@ -26,19 +25,19 @@ public:
 	void SaveAs();
 	void Exit();
 private:
+	SyntaxHighlighter* highlighter;
+
     QPushButton* openFile;
     QPushButton* saveFile;
     QPushButton* compress;
     QWidget* qwidget;
     QVBoxLayout* verticalBox;
     QHBoxLayout* horizontalBox;
-    QPlainTextEdit* xmlText; 
     Ui::xmleditorClass ui;
 	void init_menubar();
 	void init_toolbar();
 	void init_statusbar();
 	void documentChanged(); 
-	bool checkConsistency(std::string tag, std::stack<std::string>& s);
 	void setCurrentFile(QString filename);
 	void documntModified();
 	bool maybesave();
@@ -61,7 +60,7 @@ private:
 	QAction* ExitAction;
 	QAction* AboutAction;
 
-	QPlainTextEdit* textarea;
+	QTextEdit* textarea;
 	QToolBar* toolbar;
 
 	QString CurrentFilename;

@@ -6,6 +6,7 @@
         <file>icons/open.png</file>
         <file>icons/save.png</file>
         <file>icons/save-as.png</file>
+        <file>icons/minify.png</file>
     </qresource>
     <qresource prefix="/icons"/>
 </RCC>
