@@ -1,2 +1,7 @@
-﻿  SyntaxHighlighter.cpp
+﻿  moc SyntaxHighlighter.h
+  SyntaxHighlighter.cpp
+  main.cpp
+  xmleditor.cpp
+  moc_SyntaxHighlighter.cpp
+  moc_xmleditor.cpp
   xml-editor.vcxproj -> D:\Github\XML-editor\xml-editor\x64\Debug\xml-editor.exe

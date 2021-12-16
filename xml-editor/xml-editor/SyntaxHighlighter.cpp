@@ -13,23 +13,6 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument* parent) :
 
 }
 
-void SyntaxHighlighter::highlightBlock(const QString& text)
-{
-    QTextCharFormat myClassFormat;
-    myClassFormat.setFontWeight(QFont::Bold);
-    myClassFormat.setForeground(Qt::green);
-
-    QRegularExpression expression("<");
-    QRegularExpressionMatchIterator i = expression.globalMatch(text);
-    while (i.hasNext())
-    {
-        QRegularExpressionMatch match = i.next();
-        setFormat(match.capturedStart(), match.capturedLength(), myClassFormat);
-    }
-	highlightErrors(text);
-}
-
-
 // Checking Consistency 
 bool SyntaxHighlighter::checkConsistency(std::string tag, std::stack<std::string>& s) {
 	if (tag == s.top()) {
@@ -39,17 +22,11 @@ bool SyntaxHighlighter::checkConsistency(std::string tag, std::stack<std::string
 	return false;
 }
 
-void SyntaxHighlighter::highlightErrors(const QString& text)
+void SyntaxHighlighter::highlightBlock(const QString& text)
 {
-    QTextCharFormat myClassFormat;
-    myClassFormat.setFontWeight(QFont::Bold);
-    myClassFormat.setForeground(Qt::darkMagenta);
-	std::string str;
-	str = document()->toPlainText().QString::toStdString();;
-
-	std::cout << "str"; 
-	std::cout << str; 
-	std::stack<std::string> tags;
+    QTextCharFormat tagFormat;
+	tagFormat.setForeground(Qt::blue);
+	std::string str = text.QString::toStdString();
 	std::string tagName;
 	bool isClosingTag = false;
 	bool isConsistant = true;
@@ -62,20 +39,21 @@ void SyntaxHighlighter::highlightErrors(const QString& text)
 		case ' ':
 			break;
 		case '>':
+			setFormat(i - tagName.length(), i - 2, tagFormat);
 			if (isClosingTag) {
 				isClosingTag = false;
 				if (!checkConsistency(tagName, tags)) {
 					isConsistant = false;
-					QTextCharFormat myClassFormat;
-					myClassFormat.setFontWeight(QFont::Bold);
-					myClassFormat.setForeground(Qt::darkMagenta);
-					setFormat(i, 5, myClassFormat);
+					QTextCharFormat errorFormat;
+					errorFormat.setForeground(Qt::red);
+					setFormat(i - tagName.length(),  i, errorFormat);
 				}
 			}
 			else {
 				tags.push(tagName);
 				tagName = "";
 			}
+			
 			break;
 		case '/':
 			isClosingTag = true;
@@ -83,6 +61,5 @@ void SyntaxHighlighter::highlightErrors(const QString& text)
 		default:
 			tagName += str[i];
 		}
-	}    
+	}
 }
-
