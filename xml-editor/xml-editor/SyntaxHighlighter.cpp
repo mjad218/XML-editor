@@ -10,7 +10,6 @@ SyntaxHighlighter::SyntaxHighlighter(QObject* parent) :
 SyntaxHighlighter::SyntaxHighlighter(QTextDocument* parent) :
     QSyntaxHighlighter(parent)
 {
-
 }
 
 // Checking Consistency 
@@ -31,43 +30,46 @@ bool SyntaxHighlighter::checkConsistency(std::string tag, std::stack<std::string
 
 void SyntaxHighlighter::highlightBlock(const QString& text)
 {
-    QTextCharFormat tagFormat;
-	tagFormat.setForeground(Qt::blue);
-	std::string str = text.QString::toStdString();
+    //QTextCharFormat tagFormat;
+	//tagFormat.setForeground(Qt::blue);
+	//std::string str = this->document()->toPlainText().toStdString();;
+	//setFormat(i - tagName.length(), i - 2, tagFormat);
+	highlightErrors(text);
+}
+
+void SyntaxHighlighter::highlightErrors(const QString& str) {
+
 	std::string tagName;
 	bool isClosingTag = false;
-	bool isConsistant = true;
-	std::string styledXML;
 	for (unsigned int i = 0; i < str.length(); i++) {
-		switch (str[i]) {
+		switch (str.at(i).toLatin1()) {
 		case '<':
 			tagName = "";
 			break;
 		case ' ':
 			break;
 		case '>':
-			setFormat(i - tagName.length(), i - 2, tagFormat);
 			if (isClosingTag) {
 				isClosingTag = false;
 				if (!checkConsistency(tagName, tags)) {
-					isConsistant = false;
 					QTextCharFormat errorFormat;
 					//errorFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
 					errorFormat.setForeground(Qt::red);
-					setFormat(i - tagName.length(),  i, errorFormat);
+					setFormat(i - tagName.length(), i, errorFormat);
 				}
 			}
 			else {
 				tags.push(tagName);
 				tagName = "";
 			}
-			
+
 			break;
 		case '/':
 			isClosingTag = true;
 			break;
 		default:
-			tagName += str[i];
+			tagName += str.at(i).toLatin1();
 		}
+
 	}
 }

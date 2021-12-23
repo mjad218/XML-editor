@@ -14,6 +14,7 @@ public:
 
 protected:
     std::stack<std::string> tags;
+    void highlightErrors(const QString& str);
     void highlightBlock(const QString& text);
     bool checkConsistency(std::string tag, std::stack<std::string>& s);
 };

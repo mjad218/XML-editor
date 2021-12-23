@@ -1,3 +1,2 @@
-﻿  SyntaxHighlighter.cpp
-D:\Github\XML-editor\xml-editor\xml-editor\SyntaxHighlighter.cpp(30): warning C4715: 'SyntaxHighlighter::checkConsistency': not all control paths return a value
+﻿  xmleditor.cpp
   xml-editor.vcxproj -> D:\Github\XML-editor\xml-editor\x64\Debug\xml-editor.exe

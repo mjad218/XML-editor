@@ -16,7 +16,7 @@ xmleditor::xmleditor(QWidget *parent) : QMainWindow(parent)
 	textarea = new QTextEdit();
 	textarea->setPlaceholderText(QString("Write xml..."));
 	setCentralWidget(textarea);
-	highlighter = new SyntaxHighlighter(textarea->document());
+	highlighter = new SyntaxHighlighter(textarea);
 
 	init_menubar();
 
@@ -35,6 +35,7 @@ xmleditor::xmleditor(QWidget *parent) : QMainWindow(parent)
 	connect(SaveAction, &QAction::triggered, this, &xmleditor::Save);
 	connect(SaveAsAction, &QAction::triggered, this, &xmleditor::SaveAs);
 	connect(MinifyAction, &QAction::triggered, this, &xmleditor::minify);
+	connect(MakeConsistentAction, &QAction::triggered, this, &xmleditor::makeFileCoonsistent);
 
 	connect(textarea->document(), &QTextDocument::contentsChanged, this, &xmleditor::documntModified);
 
@@ -99,6 +100,11 @@ void xmleditor::init_menubar()
 		MinifyAction = new QAction(QIcon(":/icons/minify.png"), "Minify");
 		MinifyAction->setStatusTip("Minify XML");
 		optionsmenu->addAction(MinifyAction);
+
+		MakeConsistentAction = new QAction(QIcon(":/icons/fix.png"), "Make Consistent");
+		MakeConsistentAction->setStatusTip("Make Consistent");
+		optionsmenu->addAction(MakeConsistentAction);
+
 	}
 
 	helpmenu = menuBar()->addMenu("Help");
@@ -118,6 +124,7 @@ void xmleditor::init_toolbar()
 	toolbar->addAction(OpenAction);
 	toolbar->addAction(SaveAction);
 	toolbar->addAction(SaveAsAction);
+	toolbar->addAction(MakeConsistentAction);
 
 	addToolBar(toolbar);
 
@@ -128,7 +135,71 @@ void xmleditor::init_statusbar()
 	statusBar()->addPermanentWidget(new QLabel(""));
 	statusBar()->addPermanentWidget(new QLabel(tr("%1 %").arg(font_size)));
 }
+// Checking Consistency 
+bool xmleditor::checkConsistency(std::string tag , std::stack<std::string>& s) {
+	if (tag == s.top()) {
+		s.pop();
+		return true;
+	}
+	return false;
+}
 
+void xmleditor::fixClosingTag(std::string& str, std::string& tag,unsigned int& i, std::stack<std::string>& tags) {
+	int startOfClosingTag = i - tags.top().length() - 2;
+	int endOfClosingTag = startOfClosingTag + tags.top().length() + 2;
+	tags.pop(); // pop the not correct tag
+	str = str.substr(0 , startOfClosingTag) + "</" + tags.top() + str.substr(endOfClosingTag, str.length()) + ">";
+	if (!tags.empty()) {
+		if (tags.top().length() + 1 < str.length())
+			i += tags.top().length() + 1;
+		tags.pop();
+	}
+}
+
+void xmleditor::makeFileCoonsistent() {
+	std::string str = this->textarea->document()->toPlainText().toStdString();
+	std::stack<std::string> tags;
+	std::string tagName;
+	bool isClosingTag = false;
+	bool isConsistant = false;
+
+	while (!isConsistant) {
+		for (unsigned int i = 0; i < str.length(); i++) {
+			switch (str[i]) {
+			case '<':
+				tagName = "";
+				break;
+			case '\t':
+				break;
+			case ' ':
+				break;
+			case '>':
+				if (isClosingTag) {
+					if (!checkConsistency(tagName, tags)) {
+						tags.push(tagName);
+						fixClosingTag(str, tags.top(), i, tags);
+						isConsistant = true;
+					}
+					else {
+						isConsistant = true;
+					}
+					isClosingTag = false;
+				}
+				else {
+					tags.push(tagName);
+					tagName = "";
+				}
+				break;
+			case '/':
+				isClosingTag = true;
+				break;
+			default:
+				tagName += str[i];
+			}
+		}
+	}
+	this->textarea->document()->setPlainText(QString::fromStdString(str));
+}
 
 /////////////////////////////////////////////////// helpers
 

@@ -42,6 +42,9 @@ private:
 	void documntModified();
 	bool maybesave();
 	void minify();
+	bool checkConsistency(std::string tag, std::stack<std::string>& s);
+	void makeFileCoonsistent();
+	void fixClosingTag(std::string& str, std::string& tag, unsigned int& i, std::stack<std::string>& tags);
 
 	int font_size;
 
@@ -59,7 +62,7 @@ private:
 	QAction* SaveAsAction;
 	QAction* ExitAction;
 	QAction* AboutAction;
-
+	QAction* MakeConsistentAction;
 	QTextEdit* textarea;
 	QToolBar* toolbar;
 
