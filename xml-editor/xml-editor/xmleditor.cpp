@@ -143,7 +143,18 @@ bool xmleditor::checkConsistency(std::string tag , std::stack<std::string>& s) {
 	}
 	return false;
 }
-
+bool xmleditor::hasMissingTag(std::string tag, std::stack<std::string>& s) {
+	std::string firstInStack = s.top(); 
+	s.pop();
+	if (tag == s.top()) {
+		//s.pop();
+		s.push(firstInStack);
+		return true;
+	}
+	s.push(firstInStack);
+	//s.push(tag);
+	return false;
+}
 void xmleditor::fixClosingTag(std::string& str, std::string& tag,unsigned int& i, std::stack<std::string>& tags) {
 	int startOfClosingTag = i - tags.top().length() - 2;
 	int endOfClosingTag = startOfClosingTag + tags.top().length() + 2;
@@ -152,6 +163,25 @@ void xmleditor::fixClosingTag(std::string& str, std::string& tag,unsigned int& i
 	if (!tags.empty()) {
 		if (tags.top().length() + 1 < str.length())
 			i += tags.top().length() + 1;
+		tags.pop();
+	}
+}
+
+void xmleditor::fixMissingTag(std::string& str, std::string& tag, unsigned int& i, std::stack<std::string>& tags) {
+	//std::string firstInStack = tags.top();
+	//tags.pop(); 
+	std::string openingTagWithNoClosing = tags.top();
+	int startOfOpeningTag = str.std::string::rfind(openingTagWithNoClosing.c_str(), i , openingTagWithNoClosing.length());
+	int beforeStartOfNextTag = str.std::string::find('<', startOfOpeningTag);
+
+	//int startOfClosingTag = i - tags.top().length() - 2;
+	//int endOfClosingTag = startOfClosingTag + tags.top().length() + 2;
+
+	//tags.pop();
+	str = str.substr(0, beforeStartOfNextTag) + "</" + openingTagWithNoClosing + ">" + str.substr(beforeStartOfNextTag, str.length());
+	if (!tags.empty()) {
+		if (tags.top().length() + 1 < str.length())
+			i -= openingTagWithNoClosing.length() - 3;
 		tags.pop();
 	}
 }
@@ -176,8 +206,14 @@ void xmleditor::makeFileCoonsistent() {
 			case '>':
 				if (isClosingTag) {
 					if (!checkConsistency(tagName, tags)) {
-						tags.push(tagName);
-						fixClosingTag(str, tags.top(), i, tags);
+						if (hasMissingTag(tagName, tags)) {
+							fixMissingTag(str, tags.top(), i, tags);
+							//tags.push(tagName);
+						}
+						else {
+							tags.push(tagName);
+							fixClosingTag(str, tags.top(), i, tags);
+						}
 						isConsistant = true;
 					}
 					else {

@@ -45,6 +45,8 @@ private:
 	bool checkConsistency(std::string tag, std::stack<std::string>& s);
 	void makeFileCoonsistent();
 	void fixClosingTag(std::string& str, std::string& tag, unsigned int& i, std::stack<std::string>& tags);
+	void fixMissingTag(std::string& str, std::string& tag, unsigned int& i, std::stack<std::string>& tags);
+	bool hasMissingTag(std::string tag, std::stack<std::string>& s);
 
 	int font_size;
 
