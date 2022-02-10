@@ -1,2 +1,5 @@
 ﻿  xmleditor.cpp
+D:\Github\XML-editor\xml-editor\xml-editor\xmleditor.cpp(178,16): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Github\XML-editor\xml-editor\xml-editor\xmleditor.cpp(181,15): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Github\XML-editor\xml-editor\xml-editor\xmleditor.cpp(184): warning C4700: uninitialized local variable 'startOfTag' used
   xml-editor.vcxproj -> D:\Github\XML-editor\xml-editor\x64\Debug\xml-editor.exe

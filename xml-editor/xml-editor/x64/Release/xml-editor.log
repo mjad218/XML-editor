@@ -1,0 +1,11 @@
+﻿  Reading Qt configuration (C:/Qt/5.12.12/msvc2017_64/bin/qmake)
+  SyntaxHighlighter.cpp
+  xmleditor.cpp
+  main.cpp
+D:\Github\XML-editor\xml-editor\xml-editor\xmleditor.cpp(178,16): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Github\XML-editor\xml-editor\xml-editor\xmleditor.cpp(181,15): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Github\XML-editor\xml-editor\xml-editor\SyntaxHighlighter.cpp(29): warning C4715: 'SyntaxHighlighter::checkConsistency': not all control paths return a value
+  qrc_xmleditor.cpp
+  moc_xmleditor.cpp
+  moc_SyntaxHighlighter.cpp
+  xml-editor.vcxproj -> D:\Github\XML-editor\xml-editor\x64\Release\xml-editor.exe

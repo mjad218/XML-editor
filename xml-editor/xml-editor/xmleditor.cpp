@@ -146,13 +146,11 @@ bool xmleditor::checkConsistency(std::string tag , std::stack<std::string>& s) {
 bool xmleditor::hasMissingTag(std::string tag, std::stack<std::string>& s) {
 	std::string firstInStack = s.top(); 
 	s.pop();
-	if (tag == s.top()) {
-		//s.pop();
+	if (tag == ( s.top()[0] == '/' ? s.top().substr(1) : s.top() )) {
 		s.push(firstInStack);
 		return true;
 	}
 	s.push(firstInStack);
-	//s.push(tag);
 	return false;
 }
 void xmleditor::fixClosingTag(std::string& str, std::string& tag,unsigned int& i, std::stack<std::string>& tags) {
@@ -167,22 +165,40 @@ void xmleditor::fixClosingTag(std::string& str, std::string& tag,unsigned int& i
 	}
 }
 
-void xmleditor::fixMissingTag(std::string& str, std::string& tag, unsigned int& i, std::stack<std::string>& tags) {
-	//std::string firstInStack = tags.top();
-	//tags.pop(); 
-	std::string openingTagWithNoClosing = tags.top();
-	int startOfOpeningTag = str.std::string::rfind(openingTagWithNoClosing.c_str(), i , openingTagWithNoClosing.length());
-	int beforeStartOfNextTag = str.std::string::find('<', startOfOpeningTag);
+void xmleditor::fixMissingTag(std::string& str, std::string& tag, unsigned int& i, std::stack<std::string>& tags) {	
+	std::string TagWithError = tags.top();
 
-	//int startOfClosingTag = i - tags.top().length() - 2;
-	//int endOfClosingTag = startOfClosingTag + tags.top().length() + 2;
+	if (TagWithError[0] == '/') {
 
-	//tags.pop();
-	str = str.substr(0, beforeStartOfNextTag) + "</" + openingTagWithNoClosing + ">" + str.substr(beforeStartOfNextTag, str.length());
-	if (!tags.empty()) {
-		if (tags.top().length() + 1 < str.length())
-			i -= openingTagWithNoClosing.length() - 3;
-		tags.pop();
+		int startOfTag, k = i; 
+		while (true) {
+			k = str.std::string::rfind(("<" + TagWithError + ">").c_str(), k);
+			int m = str.std::string::find(("<" + TagWithError.substr(1) + ">").c_str(), k);
+			if (str.std::string::rfind(("<" + TagWithError.substr(1) + ">").c_str(), k - 1) == -1 && k > 0) {
+				startOfTag == k;
+				break;
+			}
+			startOfTag == k;
+		}
+		TagWithError = TagWithError.substr(1);
+		int beforeStartOfNextTag = str.std::string::rfind('>', startOfTag);
+		str = str.substr(0, beforeStartOfNextTag + 1) + "<" + TagWithError + ">" + str.substr(beforeStartOfNextTag + 1, str.length());
+		if (!tags.empty()) {
+			if (tags.top().length() + 1 < str.length())
+				i -= TagWithError.length() - 3;
+			tags.pop();
+		}
+	}
+	else {
+		int startOfTag = str.std::string::rfind(("<" + TagWithError + ">").c_str(), i);
+
+		int beforeStartOfNextTag = str.std::string::find('<', startOfTag);
+		str = str.substr(0, beforeStartOfNextTag) + "</" + TagWithError + ">" + str.substr(beforeStartOfNextTag, str.length());
+		if (!tags.empty()) {
+			if (tags.top().length() + 1 < str.length())
+				i -= TagWithError.length() - 3;
+			tags.pop();
+		}
 	}
 }
 
@@ -205,14 +221,13 @@ void xmleditor::makeFileCoonsistent() {
 				break;
 			case '>':
 				if (isClosingTag) {
-					if (!checkConsistency(tagName, tags)) {
-						if (hasMissingTag(tagName, tags)) {
+					if (!checkConsistency((tagName[0] == '/' ? tagName.substr(1) : tagName), tags)) {
+						if (hasMissingTag( ( tagName[0] == '/' ?tagName.substr(1) : tagName), tags)) {
 							fixMissingTag(str, tags.top(), i, tags);
-							//tags.push(tagName);
 						}
 						else {
-							tags.push(tagName);
-							fixClosingTag(str, tags.top(), i, tags);
+							tags.push( "/" + tagName);
+							//fixClosingTag(str, tags.top(), i, tags);
 						}
 						isConsistant = true;
 					}
